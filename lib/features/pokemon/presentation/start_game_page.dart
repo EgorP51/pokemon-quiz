@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pokemon_quiz/core/ui/style.dart';
 
+import '../manager/pokemon_bloc.dart';
 import 'game_round_page.dart';
 
 class StartGamePage extends StatelessWidget {
@@ -81,6 +83,7 @@ class StartGamePage extends StatelessWidget {
                             builder: (context) => const GameRoundPage(),
                           ),
                         );
+                        context.read<PokemonBloc>().add(PokemonEvent.getPokemon());
                       },
                     ),
                   ),
