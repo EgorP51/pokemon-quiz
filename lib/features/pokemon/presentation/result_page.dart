@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pokemon_quiz/features/pokemon/presentation/start_game_page.dart';
 
+import '../../../core/models/answer_status.dart';
 import '../../../core/ui/style.dart';
-import '../../../core/utils/answer_status.dart';
 import '../manager/pokemon_bloc.dart';
 
 class ResultPage extends StatefulWidget {
@@ -116,13 +116,11 @@ class _ResultPageState extends State<ResultPage> {
               ),
             SizedBox(height: 20.h),
 
-            // Информация о покемоне
             _buildPokemonInfoRow("Height", pokemon.height?.toString()),
             _buildPokemonInfoRow("Weight", pokemon.weight?.toString()),
             _buildPokemonInfoRow("Base XP", pokemon.baseExperience?.toString()),
             SizedBox(height: 16.h),
 
-            // Базовые статы
             if (pokemon.stats != null) ...[
               _buildPokemonInfoRow("HP", pokemon.stats!.hp?.toString()),
               _buildPokemonInfoRow("Attack", pokemon.stats!.attack?.toString()),
@@ -144,7 +142,7 @@ class _ResultPageState extends State<ResultPage> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(40, 10, 40, 40),
+        padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
         child: CupertinoButton(
           color: kBlue,
           child: Text(

@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokemon_quiz/features/pokemon/data/datasources/pokemon_remote_datasource.dart';
-import 'package:pokemon_quiz/features/pokemon/data/models/pokemon_response.dart';
+import 'package:pokemon_quiz/features/pokemon/data/pokemon_repository.dart';
 
+import '../../../core/models/answer_status.dart';
+import '../../../core/models/error.dart';
 import '../../../core/network/api_response.dart';
-import '../../../core/utils/answer_status.dart';
-import '../../../core/utils/error.dart';
 import '../data/models/pokemon.dart';
 
 part 'pokemon_bloc.freezed.dart';
@@ -14,61 +15,63 @@ part 'pokemon_event.dart';
 part 'pokemon_state.dart';
 
 class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
-  final PokemonRemoteDatasource pokemonRemoteDatasource;
+  final PokemonRepository pokemonRepository;
 
-  PokemonBloc(this.pokemonRemoteDatasource) : super(const PokemonState()) {
+  PokemonBloc(this.pokemonRepository) : super(const PokemonState()) {
     on<PokemonEvent>((event, emit) {
-      print(event);
+      log(event.toString());
     });
 
-    on<_GetPokemon>((event, emit) async {
-      emit(state.copyWith(isLoading: true));
-      try {
-        final PokemonResponse pokemonResponse =
-            await pokemonRemoteDatasource.getRandomPokemons();
+    on<_GetPokemon>(_onGetPokemon);
+    on<_CheckAnswer>(_onCheckAnswer);
+    on<_ResetAnswerState>(_onResetAnswerState);
+    on<_ShowResultDialog>(_onShowResultDialog);
+  }
 
-        if (pokemonResponse.status == ResponseStatus.success) {
-          final pokemons = pokemonResponse.pokemons;
-          if (pokemons != null && pokemons.isNotEmpty) {
-            pokemons.shuffle();
+  Future<void> _onGetPokemon(_GetPokemon event, Emitter<PokemonState> emit) async {
+    emit(state.copyWith(isLoading: true, error: null));
 
-            emit(
-              state.copyWith(
-                mainPokemon: pokemons.first,
-                pokemonsNames: pokemons.map((e) => e.name).toList(),
-              ),
-            );
-          } else {
-            emit(state.copyWith(error: MError(text: "No Pokémon found")));
-          }
+    try {
+      final response = await pokemonRepository.getRandomPokemons();
+
+      if (response.status == ResponseStatus.success) {
+        final pokemons = response.pokemons;
+
+        if (pokemons != null && pokemons.isNotEmpty) {
+          final shuffled = List<Pokemon>.from(pokemons)..shuffle();
+          emit(
+            state.copyWith(
+              mainPokemon: shuffled.first,
+              pokemonsNames: shuffled.map((e) => e.name).toList(),
+            ),
+          );
         } else {
-          emit(state.copyWith(error: MError(text: pokemonResponse.message)));
+          emit(state.copyWith(error: MError(text: "No Pokémon found")));
         }
-
-        emit(state.copyWith(isLoading: false));
-      } catch (e) {
-        emit(
-          state.copyWith(isLoading: false, error: MError(text: e.toString())),
-        );
+      } else {
+        emit(state.copyWith(error: MError(text: response.message)));
       }
-    });
+    } catch (e) {
+      emit(state.copyWith(error: MError(text: e.toString())));
+    } finally {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
 
-    on<_CheckAnswer>((event, emit) {
-      final isCorrect = event.name == state.mainPokemon?.name;
+  void _onCheckAnswer(_CheckAnswer event, Emitter<PokemonState> emit) {
+    final correct = state.mainPokemon?.name == event.name;
+    emit(state.copyWith(answerStatus: correct ? Correct() : Incorrect()));
 
-      emit(state.copyWith(answerStatus: isCorrect ? Correct() : Incorrect()));
+    if (correct) {
+      add(const _ShowResultDialog(true));
+    }
+  }
 
-      if (isCorrect) {
-        add(const _ShowResultDialog(true));
-      }
-    });
+  void _onResetAnswerState(_ResetAnswerState event, Emitter<PokemonState> emit) {
+    emit(state.copyWith(answerStatus: null));
+  }
 
-    on<_ResetAnswerState>((event, emit) {
-      emit(state.copyWith(answerStatus: null));
-    });
-
-    on<_ShowResultDialog>((event, emit) {
-      emit(state.copyWith(showResultDialog: true));
-    });
+  void _onShowResultDialog(_ShowResultDialog event, Emitter<PokemonState> emit) {
+    emit(state.copyWith(showResultDialog: true));
   }
 }

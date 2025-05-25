@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "35997779580",
+    "project_id": "pokemon-quiz-6c568",
+    "storage_bucket": "pokemon-quiz-6c568.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35997779580:android:55944b3699ba048a926bf9",
+        "android_client_info": {
+          "package_name": "com.example.pokemon_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEjYfceNoFc4pXKt_0bG1Aes6QavWC-M8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

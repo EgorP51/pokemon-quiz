@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "pokemon-quiz-6c568",
+          "appId": "1:35997779580:android:55944b3699ba048a926bf9",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "pokemon-quiz-6c568",
+          "appId": "1:35997779580:ios:f202c7832b91351e926bf9",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "pokemon-quiz-6c568",
+          "configurations": {
+            "android": "1:35997779580:android:55944b3699ba048a926bf9",
+            "ios": "1:35997779580:ios:f202c7832b91351e926bf9"
+          }
+        }
+      }
+    }
+  }
+}
