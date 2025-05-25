@@ -1,6 +1,7 @@
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokemon_quiz/features/pokemon/data/pokemon_repository.dart';
@@ -19,7 +20,9 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
 
   PokemonBloc(this.pokemonRepository) : super(const PokemonState()) {
     on<PokemonEvent>((event, emit) {
-      log(event.toString());
+      if (kDebugMode) {
+        print(event.toString());
+      }
     });
 
     on<_GetPokemon>(_onGetPokemon);
@@ -38,10 +41,11 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         final pokemons = response.pokemons;
 
         if (pokemons != null && pokemons.isNotEmpty) {
-          final shuffled = List<Pokemon>.from(pokemons)..shuffle();
+          final shuffled = List<Pokemon>.from(pokemons);
+          shuffled.shuffle();
           emit(
             state.copyWith(
-              mainPokemon: shuffled.first,
+              mainPokemon: shuffled[Random().nextInt(shuffled.length)],
               pokemonsNames: shuffled.map((e) => e.name).toList(),
             ),
           );

@@ -49,117 +49,120 @@ class _ResultPageState extends State<ResultPage> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: kWhite,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          pokemon.name.toUpperCase(),
-          style: TextStyle(
-            fontFamily: 'Bangers',
-            fontSize: 18.sp,
-            color: kWhite,
-            letterSpacing: 1.5,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: kRed,
-        iconTheme: IconThemeData(color: kWhite),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: Image.network(
-                pokemon.imageUrl,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return Center(
-                    child: Text(
-                      "Error loading Pokémon",
-                      style: TextStyle(
-                        fontFamily: 'Fredoka',
-                        fontSize: 20.sp,
-                        color: kBlack,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 20.h),
-
-            if (pokemon.types != null && pokemon.types!.isNotEmpty)
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 8.w,
-                runSpacing: 8.h,
-                children:
-                    pokemon.types!
-                        .map(
-                          (type) => Chip(
-                            label: Text(
-                              type.toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: kWhite,
-                              ),
-                            ),
-                            backgroundColor: kBlue,
-                          ),
-                        )
-                        .toList(),
-              ),
-            SizedBox(height: 20.h),
-
-            _buildPokemonInfoRow("Height", pokemon.height?.toString()),
-            _buildPokemonInfoRow("Weight", pokemon.weight?.toString()),
-            _buildPokemonInfoRow("Base XP", pokemon.baseExperience?.toString()),
-            SizedBox(height: 16.h),
-
-            if (pokemon.stats != null) ...[
-              _buildPokemonInfoRow("HP", pokemon.stats!.hp?.toString()),
-              _buildPokemonInfoRow("Attack", pokemon.stats!.attack?.toString()),
-              _buildPokemonInfoRow(
-                "Defense",
-                pokemon.stats!.defense?.toString(),
-              ),
-              _buildPokemonInfoRow(
-                "Sp. Atk",
-                pokemon.stats!.specialAttack?.toString(),
-              ),
-              _buildPokemonInfoRow(
-                "Sp. Def",
-                pokemon.stats!.specialDefense?.toString(),
-              ),
-              _buildPokemonInfoRow("Speed", pokemon.stats!.speed?.toString()),
-            ],
-          ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-        child: CupertinoButton(
-          color: kBlue,
-          child: Text(
-            'Go to Home',
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: kWhite,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            pokemon.name.toUpperCase(),
             style: TextStyle(
-              fontFamily: 'Fredoka',
-              fontSize: 20.sp,
+              fontFamily: 'Bangers',
+              fontSize: 18.sp,
               color: kWhite,
-              fontWeight: FontWeight.w800,
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const StartGamePage()),
-            );
-          },
+          backgroundColor: kRed,
+          iconTheme: IconThemeData(color: kWhite),
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(
+                  pokemon.imageUrl,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Center(
+                      child: Text(
+                        "Error loading Pokémon",
+                        style: TextStyle(
+                          fontFamily: 'Fredoka',
+                          fontSize: 20.sp,
+                          color: kBlack,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20.h),
+
+              if (pokemon.types != null && pokemon.types!.isNotEmpty)
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8.w,
+                  runSpacing: 8.h,
+                  children:
+                      pokemon.types!
+                          .map(
+                            (type) => Chip(
+                              label: Text(
+                                type.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: kWhite,
+                                ),
+                              ),
+                              backgroundColor: kBlue,
+                            ),
+                          )
+                          .toList(),
+                ),
+              SizedBox(height: 20.h),
+
+              _buildPokemonInfoRow("Height", pokemon.height?.toString()),
+              _buildPokemonInfoRow("Weight", pokemon.weight?.toString()),
+              _buildPokemonInfoRow("Base XP", pokemon.baseExperience?.toString()),
+              SizedBox(height: 16.h),
+
+              if (pokemon.stats != null) ...[
+                _buildPokemonInfoRow("HP", pokemon.stats!.hp?.toString()),
+                _buildPokemonInfoRow("Attack", pokemon.stats!.attack?.toString()),
+                _buildPokemonInfoRow(
+                  "Defense",
+                  pokemon.stats!.defense?.toString(),
+                ),
+                _buildPokemonInfoRow(
+                  "Sp. Atk",
+                  pokemon.stats!.specialAttack?.toString(),
+                ),
+                _buildPokemonInfoRow(
+                  "Sp. Def",
+                  pokemon.stats!.specialDefense?.toString(),
+                ),
+                _buildPokemonInfoRow("Speed", pokemon.stats!.speed?.toString()),
+              ],
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+          child: CupertinoButton(
+            color: kBlue,
+            child: Text(
+              'Go to Home',
+              style: TextStyle(
+                fontFamily: 'Fredoka',
+                fontSize: 20.sp,
+                color: kWhite,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const StartGamePage()),
+              );
+            },
+          ),
         ),
       ),
     );
