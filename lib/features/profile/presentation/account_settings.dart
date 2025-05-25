@@ -40,7 +40,9 @@ class AccountSettings extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child:
                         state.user == null ||
-                                (state.user != null && state.user!.uid == '-1')
+                                (state.user != null &&
+                                        state.user!.uid == '-1' ||
+                                    state.user!.uid!.isEmpty)
                             ? _unauthenticated(context)
                             : _authenticated(state, context),
                   ),

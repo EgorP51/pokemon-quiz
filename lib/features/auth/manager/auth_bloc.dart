@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../core/models/error.dart';
+import '../../../core/models/error.dart' show MError;
 import '../../../core/models/user_model.dart';
 import '../data/auth_repository.dart';
 import '../data/user_repository.dart';
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _handleAuthFlow(emit, () async {
       final user = await _authRepository.getCurrentUser();
 
-      if ((user.uid ?? '').isNotEmpty && user.uid != '-1') {
+      if (user.uid!.isNotEmpty && user.uid != '-1') {
         log('[AuthBloc] Authenticated user: ${user.uid}');
       } else {
         log('[AuthBloc] No user logged in');
