@@ -34,17 +34,19 @@ class AccountSettings extends StatelessWidget {
                   : null,
           child: Stack(
             children: [
-              Scaffold(
-                body: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child:
-                        state.user == null ||
-                                (state.user != null &&
-                                        state.user!.uid == '-1' ||
-                                    state.user!.uid!.isEmpty)
-                            ? _unauthenticated(context)
-                            : _authenticated(state, context),
+              SafeArea(
+                child: Scaffold(
+                  body: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child:
+                          state.user == null ||
+                                  (state.user != null &&
+                                          state.user!.uid == '-1' ||
+                                      state.user!.uid!.isEmpty)
+                              ? _unauthenticated(context)
+                              : _authenticated(state, context),
+                    ),
                   ),
                 ),
               ),
