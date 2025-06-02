@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '35997779580',
     projectId: 'pokemon-quiz-6c568',
     storageBucket: 'pokemon-quiz-6c568.firebasestorage.app',
+    androidClientId: '35997779580-0kkaqmfp85b6s6i9i99dsr6v3h388k8j.apps.googleusercontent.com',
+    iosClientId: '35997779580-k4u4c741c3orvqolk2258lmdair1edqm.apps.googleusercontent.com',
     iosBundleId: 'com.example.pokemonQuiz',
   );
+
 }
